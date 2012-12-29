@@ -22,10 +22,10 @@
 #endif
 
 
-void logger_string_fileNameFromPath ( char ** stringFileNameReturned, uint32_t * stringFileNameReturnedLen, const char * filePath, uint32_t filePathLen )
+void logger_string_fileNameFromPath ( char ** stringFileNameReturned, size_t * stringFileNameReturnedLen, const char * filePath, size_t filePathLen )
 {
-    uint32_t offsetForLocalPathOnly = 0U;
-    uint32_t index = 0U;
+    size_t offsetForLocalPathOnly = 0U;
+    size_t index = 0U;
     
     while ( ( index < filePathLen ) && ( filePath[index] != '\0' ) )
     {
@@ -50,7 +50,7 @@ void logger_string_fileNameFromPath ( char ** stringFileNameReturned, uint32_t *
     }
 }
 
-void logger_string_trimWhitespace ( char ** stringTrimmed, uint32_t * stringTrimmedLen, char * str, uint32_t strLen )
+void logger_string_trimWhitespace ( char ** stringTrimmed, size_t * stringTrimmedLen, char * str, size_t strLen )
 {
     if ( strLen == 0 )
     {
@@ -60,7 +60,7 @@ void logger_string_trimWhitespace ( char ** stringTrimmed, uint32_t * stringTrim
     }
     
     const char *end;
-    uint32_t out_size;
+    size_t out_size;
     
     /* Trim leading space */
     while ( isspace(*str) )
@@ -94,10 +94,10 @@ void logger_string_trimWhitespace ( char ** stringTrimmed, uint32_t * stringTrim
     *stringTrimmedLen = out_size;
 }
 
-void logger_string_trimFileNameExtension ( uint32_t * stringTrimmedLen, char * str, uint32_t strLen )
+void logger_string_trimFileNameExtension ( size_t * stringTrimmedLen, char * str, size_t strLen )
 {
-    uint32_t offsetForLocalPathOnly = strLen;
-    uint32_t index = strLen;
+    size_t offsetForLocalPathOnly = strLen;
+    size_t index = strLen;
     
     while ( index > 0U )
     {
@@ -119,7 +119,7 @@ void logger_string_trimFileNameExtension ( uint32_t * stringTrimmedLen, char * s
 
 char* logger_string_findFirstOccurenceOfChar ( const char* str, const char searchChar )
 {
-    while ( ( (void*)*str != NULL ) &&
+    while ( ( *str != '\0' ) &&
            ( (char)*str != searchChar ) )
     {
         str += 1U;
@@ -128,7 +128,7 @@ char* logger_string_findFirstOccurenceOfChar ( const char* str, const char searc
     return (char*)str;
 }
 
-uint32_t logger_string_numberOfOccurencesOfChar ( const char* str, uint32_t strLen, const char searchChar )
+uint32_t logger_string_numberOfOccurencesOfChar ( const char* str, size_t strLen, const char searchChar )
 {
     uint32_t matchCount = 0U;
 

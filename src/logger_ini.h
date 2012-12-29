@@ -56,7 +56,7 @@ typedef void* LOGGER_INI_SECTIONHANDLE;
  @param[in] filePathLen length of above param
  @return #true on success
  */
-bool logger_ini_initFromFile ( const char * filePath, uint32_t filePathLen );
+bool logger_ini_initFromFile ( const char * filePath, size_t filePathLen );
 
 
 /**
@@ -88,7 +88,7 @@ uint32_t logger_ini_numberOfSections ( void );
  @param[out] sectionLen length of section name returned (optional)
  @return #LOGGER_INI_STATUS_SUCCESS on success
  */
-LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *handle, uint32_t sectionIndex, char **sectionName, uint32_t *sectionLen );
+LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *handle, uint32_t sectionIndex, char **sectionName, size_t *sectionLen );
     
     
 /**
@@ -98,7 +98,7 @@ LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *ha
  @param[in] sectionNameLen length of name of section to retrieve
  @return #LOGGER_INI_STATUS_SUCCESS on success
  */
-LOGGER_INI_STATUS logger_ini_sectionHandleByName ( LOGGER_INI_SECTIONHANDLE *handle, const char *sectionName, uint32_t sectionNameLen );
+LOGGER_INI_STATUS logger_ini_sectionHandleByName ( LOGGER_INI_SECTIONHANDLE *handle, const char *sectionName, size_t sectionNameLen );
     
     
 /**
@@ -120,7 +120,7 @@ LOGGER_INI_STATUS logger_ini_sectionNumberOfKeyValuePairs ( LOGGER_INI_SECTIONHA
  @param[out] valueLen returned value name length
  @return #LOGGER_INI_STATUS_SUCCESS on success
  */
-LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTIONHANDLE handle, uint32_t sectionIdx, char **keyName, uint32_t *keyLen, char **valueName, uint32_t *valueLen );
+LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTIONHANDLE handle, uint32_t sectionIdx, char **keyName, size_t *keyLen, char **valueName, size_t *valueLen );
     
     
 /**
@@ -132,7 +132,7 @@ LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTION
  @param[out] valueLen returned value name length
  @return #LOGGER_INI_STATUS_SUCCESS on success, #LOGGER_INI_STATUS_KEY_NOT_FOUND if keyName not found
  */
-LOGGER_INI_STATUS logger_ini_sectionRetrieveValueFromKey ( LOGGER_INI_SECTIONHANDLE handle, char *keyName, uint32_t keyLen, char **valueName, uint32_t *valueLen );
+LOGGER_INI_STATUS logger_ini_sectionRetrieveValueFromKey ( LOGGER_INI_SECTIONHANDLE handle, char *keyName, size_t keyLen, char **valueName, size_t *valueLen );
 
 
     

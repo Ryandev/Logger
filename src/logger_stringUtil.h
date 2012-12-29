@@ -26,7 +26,7 @@ extern "C" {
  @param[in] filePath char array to remove path from
  @param[in] filePathLen length of above char array
  */
-void logger_string_fileNameFromPath ( char ** stringFileNameReturned, uint32_t * stringFileNameReturnedLen, const char * filePath, uint32_t filePathLen );
+void logger_string_fileNameFromPath ( char ** stringFileNameReturned, size_t * stringFileNameReturnedLen, const char * filePath, size_t filePathLen );
 
 
 /**
@@ -37,7 +37,7 @@ void logger_string_fileNameFromPath ( char ** stringFileNameReturned, uint32_t *
  @param[in] str char array to remove whitespaces from
  @param[in] strLen length of above array
  */
-void logger_string_trimWhitespace ( char ** stringTrimmed, uint32_t * stringTrimmedLen, char * str, uint32_t strLen );
+void logger_string_trimWhitespace ( char ** stringTrimmed, size_t * stringTrimmedLen, char * str, size_t strLen );
 
 
 /**
@@ -47,7 +47,7 @@ void logger_string_trimWhitespace ( char ** stringTrimmed, uint32_t * stringTrim
  @param[in] str char array to search
  @param[in] strLen length of above char array
  */
-void logger_string_trimFileNameExtension ( uint32_t * stringTrimmedLen, char * str, uint32_t strLen );
+void logger_string_trimFileNameExtension ( size_t * stringTrimmedLen, char * str, size_t strLen );
 
 
 
@@ -65,7 +65,7 @@ char* logger_string_findFirstOccurenceOfChar ( const char* str, const char searc
  @param[in] searchChar character to look for
  @return occurences of search char in string
  */
-uint32_t logger_string_numberOfOccurencesOfChar ( const char* str, uint32_t strLen, const char searchChar );
+uint32_t logger_string_numberOfOccurencesOfChar ( const char* str, size_t strLen, const char searchChar );
 
 
 #ifdef __cplusplus

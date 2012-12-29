@@ -72,7 +72,7 @@ static LOGGER_STATUS logger_startup ( void )
         LOGGER_INI_SECTIONHANDLE handle = NULL;
         
         char *sectionname = NULL;
-        uint32_t sectionlen = 0;
+        size_t sectionlen = 0;
         
         logger_ini_sectionHandleByIndex(&handle, i, &sectionname, &sectionlen);
         

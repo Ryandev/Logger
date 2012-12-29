@@ -38,7 +38,7 @@ LOGGER_STATUS logger_file_initialize ( LOGGER_INI_SECTIONHANDLE paramBag )
     else
     {
         char *filePath = NULL;
-        uint32_t filePathLen = 0U;
+        size_t filePathLen = 0U;
 
         logger_ini_sectionRetrieveValueFromKey(paramBag, "output", strlen("output"), &filePath, &filePathLen);
 
@@ -89,7 +89,7 @@ LOGGER_STATUS logger_file_terminate ( void )
     return status;
 }
 
-LOGGER_STATUS logger_file_transmit ( char * msg, uint32_t msgLen )
+LOGGER_STATUS logger_file_transmit ( char * msg, size_t msgLen )
 {
     LOGGER_STATUS status = LOGGER_STATUS_FAILURE_INVALID_MESSAGE;
     

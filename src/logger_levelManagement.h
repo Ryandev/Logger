@@ -44,7 +44,7 @@ LOGGER_LEVEL loggerFlags_level_charToLevel ( char loggerChar );
  @param[in] loggerLevelLen Number of characters in above char array to examine
  @return returns all flags from string
  */
-LOGGER_LEVEL_FLAGS loggerFlags_level_stringToFlags ( char * loggerLevel, uint32_t loggerLevelLen );
+LOGGER_LEVEL_FLAGS loggerFlags_level_stringToFlags ( char * loggerLevel, size_t loggerLevelLen );
 
 
 /**

@@ -71,7 +71,7 @@ extern "C" {
  @param[in] severity NULL terminated string of severity
  @param[in] message NULL terminated string of message
  */
-void logger_assemble_string ( char * string, uint32_t string_size, char * timestamp, char * filename, char * linenumber, char * functionname, char * severity, char * message );
+void logger_assemble_string ( char * string, size_t string_size, char * timestamp, char * filename, char * linenumber, char * functionname, char * severity, char * message );
 
 
 /**
@@ -103,7 +103,7 @@ void loggerFileNameString ( char * stringFileName, uint8_t stringSize, char * fi
  @param[out] stringTimeStamp timestamp string to write to
  @param[in] stringSize maximum number of chars to write timestamp to. must be greater than equal to #LOGGER_TIMESTAMP_CHARS_MINIMUM
  */
-void loggerGetTimeString ( char * stringTimestamp, uint8_t stringSize );
+void loggerGetTimeString ( char * stringTimestamp, size_t stringSize );
 
     
 #ifdef __cplusplus

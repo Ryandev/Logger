@@ -43,7 +43,7 @@ typedef LOGGER_STATUS (*LOGGER_TEMPLATE_TERM)(void);
  @param[in] msgLen number of characters in msg
  @return LOGGER_STATUS_OK on success
  */
-typedef LOGGER_STATUS (*LOGGER_TEMPLATE_SEND)( char * msg, uint32_t msgLen );
+typedef LOGGER_STATUS (*LOGGER_TEMPLATE_SEND)( char * msg, size_t msgLen );
 
 
 /**

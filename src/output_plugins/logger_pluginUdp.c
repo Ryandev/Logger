@@ -29,11 +29,11 @@ static pthread_mutex_t f_mutex_print = PTHREAD_MUTEX_INITIALIZER;
 static int f_logger_udp = SOCKET_INVALID;
 static struct sockaddr_in f_logger_udp_sockaddr;
 
-static bool logger_udp_validateIpString ( char * ipAddrStr, uint32_t ipAddrStrLen );
+static bool logger_udp_validateIpString ( char * ipAddrStr, size_t ipAddrStrLen );
 
 
 
-static bool logger_udp_validateIpString ( char * ipAddrStr, uint32_t ipAddrStrLen )
+static bool logger_udp_validateIpString ( char * ipAddrStr, size_t ipAddrStrLen )
 {
     bool isValidIpAddr = true;
     
@@ -73,41 +73,14 @@ static bool logger_udp_validateIpString ( char * ipAddrStr, uint32_t ipAddrStrLe
     return isValidIpAddr;
 }
 
-static char* logger_udp_getParamFromParamBag ( LOGGER_INI_SECTIONHANDLE paramBag, char* paramName )
-{
-    char* retStr = NULL;
-    
-    uint32_t count = 0U;
-    
-    logger_ini_sectionNumberOfKeyValuePairs ( paramBag, &count );
-    
-    for ( uint32_t i=0U; i<count; i++ )
-    {
-        char* key = NULL;
-        uint32_t keyLen = 0U;
-        char* value = NULL;
-        uint32_t valueLen = 0U;
-        
-        logger_ini_sectionRetrieveKeyValueAtIndex(paramBag, i, &key, &keyLen, &value, &valueLen);
-        
-        if ( strncmp(key, paramName, keyLen) == 0 )
-        {
-            retStr = value;
-            break;
-        }
-    }
-    
-    return retStr;
-}
-
 LOGGER_STATUS logger_udp_initialize ( LOGGER_INI_SECTIONHANDLE paramBag )
 {
     LOGGER_STATUS status = LOGGER_STATUS_FAILURE;
     
     char *ipAddress = NULL;
-    uint32_t ipAddressLen = 0U;
+    size_t ipAddressLen = 0U;
     char *portStr = NULL;
-    uint32_t portStrLen = 0U;
+    size_t portStrLen = 0U;
     
     logger_ini_sectionRetrieveValueFromKey(paramBag, "ip", strlen("ip"), &ipAddress, &ipAddressLen);
     logger_ini_sectionRetrieveValueFromKey(paramBag, "port", strlen("port"), &portStr, &portStrLen);
@@ -188,7 +161,7 @@ LOGGER_STATUS logger_udp_terminate ( void )
     return status;
 }
 
-LOGGER_STATUS logger_udp_transmit ( char * msg, uint32_t msgLen )
+LOGGER_STATUS logger_udp_transmit ( char * msg, size_t msgLen )
 {
     LOGGER_STATUS status = LOGGER_STATUS_FAILURE_INVALID_MESSAGE;
     
@@ -201,7 +174,7 @@ LOGGER_STATUS logger_udp_transmit ( char * msg, uint32_t msgLen )
     
     pthread_mutex_lock( &f_mutex_print );
     
-    uint32_t charsSent = (uint32_t)sendto(f_logger_udp, msg, msgLen, flags, (const struct sockaddr *)&f_logger_udp_sockaddr, addrSize);
+    size_t charsSent = sendto(f_logger_udp, msg, msgLen, flags, (const struct sockaddr *)&f_logger_udp_sockaddr, (socklen_t)addrSize);
     
     pthread_mutex_unlock( &f_mutex_print );
     

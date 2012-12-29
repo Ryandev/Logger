@@ -19,7 +19,7 @@
 #define LOGGER_LOG_ENTRY_FORMAT ("%s%c%s%c%s%c%s%c%s%c%s")
 
 
-void logger_assemble_string ( char * string, uint32_t string_size, char * timestamp, char * filename, char * linenumber, char * functionname, char * severity, char * message )
+void logger_assemble_string ( char * string, size_t string_size, char * timestamp, char * filename, char * linenumber, char * functionname, char * severity, char * message )
 {
     snprintf( (char*)(string), (string_size), LOGGER_LOG_ENTRY_FORMAT, \
              (char*)(timestamp), LOGGER_SEPERATOR_CHAR, \
@@ -77,7 +77,7 @@ void loggerLevelStringFromLevel ( LOGGER_LEVEL level, char * stringSeverity, uin
     snprintf((char *)stringSeverity, stringSize, "%s",(char*)levelStr);
 }
 
-void loggerGetTimeString ( char * stringTimestamp, uint8_t stringSize )
+void loggerGetTimeString ( char * stringTimestamp, size_t stringSize )
 {
     time_t  t = time(NULL);
     struct  tm *tme = localtime(&t);

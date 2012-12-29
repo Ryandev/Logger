@@ -21,9 +21,9 @@
 typedef struct _IniSection
 {
     char *buffer;
-    uint32_t bufferLen;
+    size_t bufferLen;
     char *sectionName;
-    uint32_t sectionNameLen;
+    size_t sectionNameLen;
     
     char **keyNames;
     char **valueNames;
@@ -37,7 +37,7 @@ static void **f_sectionsArray;
 static uint32_t f_sectionsArrayCount = 0U;
 
 
-static IniSection * logger_ini_createSection ( char *sectionName, uint32_t sectionNameLen, char *sectionBuffer, uint32_t sectionBufferLen )
+static IniSection * logger_ini_createSection ( char *sectionName, size_t sectionNameLen, char *sectionBuffer, size_t sectionBufferLen )
 {
     IniSection *setting = logger_memAlloc(sizeof(IniSection));
     
@@ -95,7 +95,7 @@ static IniSection * logger_ini_createSection ( char *sectionName, uint32_t secti
 
                 /* create key */
                 char *keyName = newlineOffsetBefore + 1U;
-                uint32_t keyLen = ( equalsOffset - newlineOffsetBefore );
+                size_t keyLen = ( equalsOffset - newlineOffsetBefore );
                 
                 setting->keyNames[x] = logger_memAlloc( sizeof(char) * keyLen );
                 
@@ -106,7 +106,7 @@ static IniSection * logger_ini_createSection ( char *sectionName, uint32_t secti
 
                 /* create value */
                 char *valueName = equalsOffset + 1U;
-                uint32_t valueLen = ( newlineOffsetAfter - equalsOffset ) - 1U;
+                size_t valueLen = ( newlineOffsetAfter - equalsOffset ) - 1U;
 
                 /* rstrip \n */
                 while ( ( valueLen > 0 ) &&
@@ -199,13 +199,11 @@ static bool logger_ini_removeSection ( IniSection *section )
     return didAdd;
 }
 
-static uint32_t logger_ini_numberOfSectionsInBuffer ( const char * fileBuffer, uint32_t fileBufferSize )
+static uint32_t logger_ini_numberOfSectionsInBuffer ( const char * fileBuffer, size_t fileBufferSize )
 {
     uint32_t count = 0U;
     
-    char charCheck = '=';
-    
-    char* currentOffset = &fileBuffer[0U];
+    char* currentOffset = (char*)&fileBuffer[0U];
     
     while ( currentOffset < &fileBuffer[fileBufferSize] )
     {
@@ -214,7 +212,7 @@ static uint32_t logger_ini_numberOfSectionsInBuffer ( const char * fileBuffer, u
         if ( *currentOffset == '[' )
         {
             /* find the closing brace */
-            for ( uint32_t i=( currentOffset - &fileBuffer[0U] ); i<fileBufferSize; i++ )
+            for ( size_t i=( currentOffset - &fileBuffer[0U] ); i<fileBufferSize; i++ )
             {
                 if ( fileBuffer[i] == ']' )
                 {
@@ -231,7 +229,7 @@ static uint32_t logger_ini_numberOfSectionsInBuffer ( const char * fileBuffer, u
 }
 
 /* remove any characters we will not be interpreting when reading the file */
-static void logger_ini_formatFileBuffer ( char * fileBuffer, uint32_t fileBufferSize )
+static void logger_ini_formatFileBuffer ( char * fileBuffer, size_t fileBufferSize )
 {
     /* fix any newline chars first */
     for ( uint32_t i=0U; i<fileBufferSize; i++ )
@@ -258,10 +256,10 @@ static void logger_ini_formatFileBuffer ( char * fileBuffer, uint32_t fileBuffer
         if ( ( fileBuffer[curIdx] == ';' ) ||
              ( fileBuffer[curIdx] == '#' ) )
         {
-            uint32_t wipeCount = newlinePosition - &fileBuffer[curIdx];
+            size_t wipeCount = newlinePosition - &fileBuffer[curIdx];
             
             /* remove comment lines by compacting */
-            for ( uint32_t i=curIdx; i<fileBufferSize-wipeCount; i++ )
+            for ( size_t i=curIdx; i<fileBufferSize-wipeCount; i++ )
             {
                 fileBuffer[i] = fileBuffer[i+wipeCount];
             }
@@ -274,7 +272,7 @@ static void logger_ini_formatFileBuffer ( char * fileBuffer, uint32_t fileBuffer
 
 }
 
-static bool logger_ini_loadFileBuffer ( char * fileBuffer, uint32_t fileBufferSize )
+static bool logger_ini_loadFileBuffer ( char * fileBuffer, size_t fileBufferSize )
 {
     logger_ini_formatFileBuffer(fileBuffer, fileBufferSize);
     
@@ -289,7 +287,7 @@ static bool logger_ini_loadFileBuffer ( char * fileBuffer, uint32_t fileBufferSi
         *(f_sectionsArray + i) = (void*)0;
     }
     
-    uint32_t currentOffset = 0U;
+    size_t currentOffset = 0U;
     
     while ( ( currentOffset < fileBufferSize ) && ( fileBuffer[currentOffset] != 0 ) )
     {
@@ -352,7 +350,7 @@ static void logger_ini_getSectionKeyByIndex( IniSection *section, uint32_t index
     
 }
 
-bool logger_ini_initFromFile ( const char * filePath, uint32_t filePathLen )
+bool logger_ini_initFromFile ( const char * filePath, size_t filePathLen )
 {
     bool didInit = false;
     
@@ -361,7 +359,7 @@ bool logger_ini_initFromFile ( const char * filePath, uint32_t filePathLen )
         FILE *filePointer = fopen(filePath, "r");
         
         fseek(filePointer , 0 , SEEK_END);
-        uint32_t fileBufferSize = (uint32_t)ftell(filePointer);
+        size_t fileBufferSize = ftell(filePointer);
         rewind(filePointer);
         
         char *fileBuffer = logger_memAlloc(sizeof(char) * fileBufferSize);
@@ -403,7 +401,7 @@ uint32_t logger_ini_numberOfSections ( void )
 }
 
 
-LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *handle, uint32_t sectionIndex, char **sectionName, uint32_t *sectionLen )
+LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *handle, uint32_t sectionIndex, char **sectionName, size_t *sectionLen )
 {
     LOGGER_INI_STATUS status = LOGGER_INI_STATUS_UNDEF;
     
@@ -432,7 +430,7 @@ LOGGER_INI_STATUS logger_ini_sectionHandleByIndex ( LOGGER_INI_SECTIONHANDLE *ha
 }
 
 
-LOGGER_INI_STATUS logger_ini_sectionHandleByName ( LOGGER_INI_SECTIONHANDLE *handle, const char *sectionName, uint32_t sectionNameLen )
+LOGGER_INI_STATUS logger_ini_sectionHandleByName ( LOGGER_INI_SECTIONHANDLE *handle, const char *sectionName, size_t sectionNameLen )
 {
     LOGGER_INI_STATUS status = LOGGER_INI_STATUS_UNDEF;
     
@@ -482,7 +480,7 @@ LOGGER_INI_STATUS logger_ini_sectionNumberOfKeyValuePairs ( LOGGER_INI_SECTIONHA
     return status;
 }
 
-LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTIONHANDLE handle, uint32_t sectionIdx, char **keyName, uint32_t *keyLen, char **valueName, uint32_t *valueLen )
+LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTIONHANDLE handle, uint32_t sectionIdx, char **keyName, size_t *keyLen, char **valueName, size_t *valueLen )
 {
     LOGGER_INI_STATUS status = LOGGER_INI_STATUS_UNDEF;
     
@@ -498,8 +496,8 @@ LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTION
             char *k = section->keyNames[sectionIdx];
             char *v = section->valueNames[sectionIdx];
             
-            uint32_t kLen = strlen(k);
-            uint32_t vLen = 0U;
+            size_t kLen = strlen(k);
+            size_t vLen = 0U;
             
             if ( v )
             {
@@ -528,7 +526,7 @@ LOGGER_INI_STATUS logger_ini_sectionRetrieveKeyValueAtIndex ( LOGGER_INI_SECTION
 }
 
 
-LOGGER_INI_STATUS logger_ini_sectionRetrieveValueFromKey ( LOGGER_INI_SECTIONHANDLE handle, char *keyName, uint32_t keyLen, char **valueName, uint32_t *valueLen )
+LOGGER_INI_STATUS logger_ini_sectionRetrieveValueFromKey ( LOGGER_INI_SECTIONHANDLE handle, char *keyName, size_t keyLen, char **valueName, size_t *valueLen )
 {
     LOGGER_INI_STATUS status = LOGGER_INI_STATUS_UNDEF;
     
@@ -541,9 +539,9 @@ LOGGER_INI_STATUS logger_ini_sectionRetrieveValueFromKey ( LOGGER_INI_SECTIONHAN
         for ( uint32_t i=0U; i<count; i++ )
         {
             char* tmpkey = NULL;
-            uint32_t tmpkeyLen = 0U;
+            size_t tmpkeyLen = 0U;
             char* tmpvalue = NULL;
-            uint32_t tmpvalueLen = 0U;
+            size_t tmpvalueLen = 0U;
             
             logger_ini_sectionRetrieveKeyValueAtIndex(handle, i, &tmpkey, &tmpkeyLen, &tmpvalue, &tmpvalueLen);
             

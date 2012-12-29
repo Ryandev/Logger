@@ -24,7 +24,7 @@ extern "C" {
 
 LOGGER_STATUS logger_file_initialize ( LOGGER_INI_SECTIONHANDLE paramBag );
 LOGGER_STATUS logger_file_terminate ( void );
-LOGGER_STATUS logger_file_transmit ( char * msg, uint32_t msgLen );
+LOGGER_STATUS logger_file_transmit ( char * msg, size_t msgLen );
 char* logger_file_name ( void );
     
     

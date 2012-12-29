@@ -20,6 +20,7 @@ extern "C" {
     
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 
 /* enable trace for init/term */
@@ -131,7 +132,7 @@ void loggerSetSeverityEnablements_Default ( LOGGER_LEVEL loggerLevel );
  @retval #true success
  @retval #false failed
  */
-bool loggerLoadIniFile ( char * filePath, uint32_t filePathLen );
+bool loggerLoadIniFile ( char * filePath, size_t filePathLen );
 
 
 /**

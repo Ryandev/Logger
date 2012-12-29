@@ -58,7 +58,7 @@ LOGGER_STATUS logger_stdout_terminate ( void )
     return status;
 }
 
-LOGGER_STATUS logger_stdout_transmit ( char * msg, uint32_t msgLen )
+LOGGER_STATUS logger_stdout_transmit ( char * msg, size_t msgLen )
 {
     LOGGER_STATUS status = LOGGER_STATUS_FAILURE_INVALID_MESSAGE;
     

@@ -35,10 +35,10 @@ static int logger_printLog ( char * msg, int msgSize, char * fileName, int lineN
 static int logger_printLog ( char * msg, int msgSize, char * fileName, int lineNumber, char * functionName, LOGGER_LEVEL severity )
 {
     /* plus two for the ' ' in snprintf below */
-    uint32_t strSize = LOGGER_MAX_LOGGER_CHARS;
+    size_t strSize = LOGGER_MAX_LOGGER_CHARS;
     char completeMessage[LOGGER_MAX_LOGGER_CHARS];
     
-    for (uint32_t i=0U; i<LOGGER_MAX_LOGGER_CHARS; i++)
+    for ( size_t i=0U; i<LOGGER_MAX_LOGGER_CHARS; i++ )
     {
         completeMessage[i] = '\0';
     }
@@ -69,7 +69,7 @@ static int logger_printLog ( char * msg, int msgSize, char * fileName, int lineN
     }
     
     /* now work backwards and insert the NULL termination correctly */
-    for ( uint32_t i=LOGGER_MAX_LOGGER_CHARS-2; i>0U; i-- )
+    for ( size_t i=LOGGER_MAX_LOGGER_CHARS-2; i>0U; i-- )
     {
         char c = completeMessage[i];
         
@@ -162,7 +162,7 @@ bool loggerTerm  ( LOGGER_OUTPUT_HANDLE handle )
         termSuccess = logger_term();
         
         /* release logger resources for this handle */
-        logger_memFree ( handle );
+        logger_memFree ( handlePrv );
     }
     
     return termSuccess;
@@ -175,7 +175,7 @@ bool loggerInitFromFileName ( LOGGER_OUTPUT_HANDLE * handle, const char * fileNa
 
     /* get the basename */
     char *baseName = malloc( sizeof(char) * fileNameLen );
-    uint32_t baseNameLen = 0U;
+    size_t baseNameLen = 0U;
     
     logger_string_fileNameFromPath ( &baseName, &baseNameLen, fileName, fileNameLen );
 
@@ -189,7 +189,7 @@ bool loggerInitFromFileName ( LOGGER_OUTPUT_HANDLE * handle, const char * fileNa
         {
             /* find basename in overrides. If not found use default levels */
             char *overrideString = NULL;
-            uint32_t overrideStringLen = 0U;
+            size_t overrideStringLen = 0U;
             
             logger_ini_sectionRetrieveValueFromKey(inihandle, baseName, baseNameLen, &overrideString, &overrideStringLen);
             
@@ -225,7 +225,7 @@ void loggerSetSeverityEnablements_Default ( LOGGER_LEVEL loggerLevel )
     f_defaultLevel = loggerLevel;
 }
 
-bool loggerLoadIniFile ( char * filePath, uint32_t filePathLen )
+bool loggerLoadIniFile ( char * filePath, size_t filePathLen )
 {
     return logger_ini_initFromFile(filePath, filePathLen);
 }

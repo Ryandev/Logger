@@ -71,13 +71,13 @@ LOGGER_LEVEL loggerFlags_level_charToLevel ( char loggerChar )
     return loggerLevel;
 }
 
-LOGGER_LEVEL_FLAGS loggerFlags_level_stringToFlags ( char * loggerLevel, uint32_t loggerLevelLen )
+LOGGER_LEVEL_FLAGS loggerFlags_level_stringToFlags ( char * loggerLevel, size_t loggerLevelLen )
 {
     LOGGER_LEVEL_FLAGS flags = 0U;
     
     if ( loggerLevel )
     {
-        for ( uint32_t i=0U; i<loggerLevelLen; i++ )
+        for ( size_t i=0U; i<loggerLevelLen; i++ )
         {
             if ( loggerLevel[i] != '\0' )
             {
